@@ -1,121 +1,246 @@
 # ESP8266 Smart Home Automation
 
-A smart home automation project built around the ESP8266, with the long-term goal of bringing together **Google Assistant voice control, connected microphones, mobile/app control, sensors, and appliance automation** in one system.
+A smart home automation project that started with an ESP8266-based web server and relay controller.
 
-The current repository contains an early ESP8266 web-server and relay-control prototype. It is the starting point for a larger smart-home system.
+The long-term goal is to build a more intelligent smart-home system that can combine **voice control, app control, sensors, cameras, appliance control, and machine learning** to learn the user's habits and automate the home around them.
 
 ## Project Vision
 
-The goal is to build a flexible smart-home system that can control and automate devices around the home using:
+The planned system is intended to control and automate different parts of a home through:
 
 - Google Assistant voice control
-- Connected real-time microphones around the home
-- Mobile / app control
+- Real-time microphones connected to the Google Assistant setup
+- Mobile / web app control
 - Motion detection
 - Light-level detection
 - Temperature monitoring
 - Humidity monitoring
-- Automatic rules and schedules
-- Relay, IR, Wi-Fi, and Bluetooth-based appliance control
+- Camera-based presence / activity detection
+- Automatic schedules and rules
+- Machine-learning-based behavior learning
 
-The voice-control concept is centered around **Google Assistant with microphones connected around the home**, so users can give voice commands from different rooms.
+The system should not only respond to direct commands, but gradually learn how the user normally uses appliances and use that information to make useful suggestions or automate actions.
 
-## Planned Features
+## Voice Control
 
-### Voice Control
+Google Assistant will be one of the main ways to interact with the system.
 
-The system is intended to integrate with Google Assistant and connected microphones placed around the home.
+The planned setup also includes microphones around the home so the user can give voice commands from different rooms.
 
 Example commands:
 
 ```text
 "Turn on the bedroom light."
 "Turn off all the lights."
-"Set the fan to medium."
+"Set the fan to speed 2."
 "Turn on the air purifier."
 "Set the AC to 24 degrees."
 ```
 
-The exact communication architecture between Google Assistant, the microphones, and the smart-home controller will be determined during development.
+## App Control
 
-### Mobile / App Control
+A mobile / web application is planned for:
 
-A mobile or web-based interface is planned for:
+- Controlling lights and relays
+- Controlling fans
+- Controlling AC
+- Controlling air purifiers
+- Controlling air humidifiers
+- Viewing sensor data
+- Viewing device status
+- Setting schedules
+- Configuring automation preferences
+- Receiving notifications
 
-- Light and relay control
-- Fan control
-- AC control
-- Air purifier control
-- Air humidifier control
-- Sensor monitoring
-- Schedules
-- Automation rules
-- Device status
+## Sensors
 
-### Sensor Integration
+The system is planned to use multiple sensors, including:
 
-The system is intended to support:
+- Motion sensor
+- Light sensor
+- Temperature sensor
+- Humidity sensor
 
-- Motion sensors
-- Light sensors
-- Temperature sensors
-- Humidity sensors
-
-Sensor data can be used both for monitoring and automatic actions.
+Sensor data can be used for both monitoring and automation.
 
 Example:
 
 ```text
 Motion detected
-        +
+       +
 Low light level
-        ↓
-Turn on the light
+       ↓
+Suggest / turn on the light
 ```
 
 Another example:
 
 ```text
-High temperature
-        ↓
-Turn on / adjust the fan
+Room temperature rises
+       +
+User is present
+       ↓
+Suggest / adjust fan or AC
 ```
+
+## Camera Integration
+
+A camera connected to the smart-home hardware is planned as another source of information.
+
+Possible uses include:
+
+- Detecting whether someone is present
+- Detecting when the user arrives or leaves
+- Supporting room occupancy information
+- Providing additional context for automation and behavior learning
+
+The exact camera hardware and processing method will be decided during later development.
+
+## Machine Learning & Behavior Learning
+
+One of the main long-term goals is to add machine learning or other lightweight data-driven methods so the system can learn the user's habits instead of relying only on fixed rules.
+
+The system may learn patterns such as:
+
+- When the user normally arrives home
+- When the user normally leaves
+- Which days and times the user uses specific appliances
+- How the user uses the AC, fan, air purifier, and humidifier
+- Preferred appliance settings under different room conditions
+- Repeated daily or weekly routines
+
+### Example: Learning Fan / AC Preferences
+
+Suppose the user repeatedly uses:
+
+```text
+Room temperature: 27°C
+Humidity: 65%
+Time: 8:00 PM
+Fan speed: 2
+```
+
+After collecting enough history, the system could learn that the user commonly prefers that setting under similar conditions.
+
+The same concept could be applied to:
+
+- AC temperature / mode
+- Fan speed
+- Air purifier settings
+- Humidifier settings
+
+The exact ML model is not decided yet. The system may start with simple statistical or rule-based learning and become more advanced as more data is collected.
+
+## Predictive Automation
+
+The system may also learn the user's normal arrival and departure patterns using factors such as:
+
+- Day of the week
+- Time of day
+- Previous activity
+- Presence information
+- Camera information
+- Other available signals
+
+This could allow the system to prepare the home before the user arrives.
+
+Example:
+
+```text
+User usually arrives around 6:30 PM on weekdays
+                     ↓
+            Approaching usual time
+                     ↓
+             Check room conditions
+                     ↓
+       Notify user about an appliance
+```
+
+For example, the system could notify the user:
+
+> "You usually turn on the AC around this time. Turn it on?"
+
+The user could choose a preference such as:
+
+- **Always Yes** — automatically perform the action
+- **Yes** — ask for confirmation
+- **No** — do not suggest this action
+
+The same notification and preference system could be used for:
+
+- AC
+- Fan
+- Air purifier
+- Air humidifier
+- Lights
+- Other supported appliances
+
+## Nearby / Arrival Detection
+
+Another planned feature is to notify the user when they are getting close to home.
+
+Depending on the final design, the system could combine available presence or location-related signals with learned routines.
+
+Example:
+
+```text
+User is nearby
+      +
+Normal arrival time
+      +
+Room needs cooling / air treatment
+      ↓
+Send notification
+```
+
+The user can then decide whether to turn on the relevant appliance.
 
 ## Appliance Control
 
-Different appliances may use different control methods depending on the device.
+Different appliances may use different control methods.
 
 ### Lights
 
-Relay-based control can be used for supported ON/OFF loads.
+Relay-based ON/OFF control for supported electrical loads.
 
 ### Fans
 
-The system is intended to support fan control, including ON/OFF and potentially speed control depending on the fan hardware.
+Possible control methods include:
+
+- Relay-based ON/OFF
+- Hardware-specific speed control
 
 ### Air Conditioners
 
-AC control is planned through one or more of:
+Possible control methods:
 
-- IR signals
+- IR
 - Wi-Fi
 - Bluetooth
 
-The final method will depend on the AC model and its available interface.
+The final method will depend on the AC model and available interface.
 
 ### Air Purifiers
 
-The system is intended to control supported air purifiers using the control interface available on the device, such as IR, Wi-Fi, or Bluetooth.
+Possible control methods:
+
+- IR
+- Wi-Fi
+- Bluetooth
 
 ### Air Humidifiers
 
-Supported humidifiers can similarly be integrated through their available control interface.
+Possible control methods:
+
+- IR
+- Wi-Fi
+- Bluetooth
 
 ## Current Prototype
 
-The current repository contains an **ESP8266 web-server and 4-channel relay-control prototype**.
+The current repository contains an early **ESP8266 4-channel relay and web-server prototype**.
 
-The current prototype demonstrates:
+The current implementation demonstrates:
 
 - ESP8266 Wi-Fi connectivity
 - Embedded web server
@@ -125,94 +250,29 @@ The current prototype demonstrates:
 - Relay status display
 - EEPROM-based relay state storage
 
-This prototype is an early building block for the larger smart-home system described above.
+This prototype is the starting point for the larger smart-home concept described above.
 
-## System Concept
+## Current Hardware
 
-```text
-                ┌─────────────────────────────┐
-                │      Google Assistant       │
-                │   + Connected Microphones   │
-                │       Around the Home       │
-                └──────────────┬──────────────┘
-                               │
-                               │ Voice Commands
-                               ▼
-                ┌─────────────────────────────┐
-                │       Smart Home Core       │
-                │    ESP8266 / Future MCU     │
-                │      Controller Platform    │
-                └──────────────┬──────────────┘
-                               │
-          ┌────────────────────┼────────────────────┐
-          │                    │                    │
-          ▼                    ▼                    ▼
-    ┌───────────┐       ┌────────────┐      ┌──────────────┐
-    │  Sensors  │       │ App / Web  │      │ Automation   │
-    │  Motion   │       │  Control   │      │ Rules        │
-    │  Light    │       │            │      │ Schedules    │
-    │  Temp     │       │            │      │              │
-    │  Humidity │       │            │      │              │
-    └─────┬─────┘       └──────┬─────┘      └──────┬───────┘
-          │                    │                     │
-          └────────────────────┼─────────────────────┘
-                               │
-                     ┌─────────▼─────────┐
-                     │ Appliance Control │
-                     └─────────┬─────────┘
-                               │
-       ┌──────────────┬────────┼────────┬──────────────┐
-       ▼              ▼        ▼        ▼              ▼
-    Lights           Fans      AC    Air Purifier   Humidifier
-    Relay         Relay /     IR /      IR / Wi-Fi / Bluetooth
-                 Other       Wi-Fi /
-                            Bluetooth
-```
-
-## Planned Architecture
-
-The existing ESP8266 prototype is only the first stage of the project.
-
-Future development may include:
-
-- Custom PCB
-- Dedicated enclosure
-- Distributed sensor nodes around the home
-- Central smart-home controller
-- Google Assistant integration
-- Connected microphones for room-to-room voice commands
-- Secure device communication
-- User authentication
-- OTA firmware updates
-- Local/offline automation
-- Mobile application
-- Appliance-specific control modules
-- Additional communication protocols
-- More advanced automation rules
-
-## Hardware
-
-### Current Prototype
+The existing prototype uses:
 
 - ESP8266 / NodeMCU
 - 4-channel relay module
 - Suitable power supply
 - Connected loads
 
-### Planned Hardware
+## Planned Hardware Direction
 
-Depending on the final architecture:
+As the project grows, the development board may be upgraded to a more capable platform to support the additional requirements such as:
 
-- Motion sensors
-- Light sensors
-- Temperature sensors
-- Humidity sensors
-- Microphones / audio input
-- Relay modules
-- IR transmitters / receivers
-- Wi-Fi interfaces
-- Bluetooth interfaces
-- Appliance-specific control hardware
+- Camera processing
+- Microphone / audio processing
+- Machine learning
+- More sensors
+- More communication interfaces
+- More complex automation logic
+
+The final controller and hardware architecture have not been decided yet.
 
 ## Software & Technologies
 
@@ -230,9 +290,12 @@ Depending on the final architecture:
 
 - Google Assistant integration
 - Mobile / web application
-- Voice-command processing
-- Sensor and automation logic
-- Additional communication protocols
+- Voice interaction
+- Sensor processing
+- Camera-based detection
+- Machine learning / behavior learning
+- Automation and scheduling
+- IR / Wi-Fi / Bluetooth appliance control
 - Production-ready firmware
 
 ## Relay Pin Configuration
@@ -258,13 +321,17 @@ Depending on the final architecture:
 
 ## Project Status
 
-**Stage: Early prototype / experimentation**
+**Stage: Early prototype / long-term development**
 
-The current implementation is only a small part of the larger smart-home concept.
+The current code is only the first stage of the project. The larger goal is to develop a smart-home platform that can combine:
 
-The existing code focuses on ESP8266 networking, web-server control, relay switching, timers, and basic automation. The long-term goal is to expand this into a complete smart-home platform with voice control, microphones, sensors, mobile control, and control of a wide range of appliances.
+**Voice + App + Sensors + Camera + Appliance Control + Machine Learning**
+
+The system is expected to evolve significantly as the hardware and software architecture are developed.
 
 ## Roadmap
+
+### Completed
 
 - [x] ESP8266 Wi-Fi communication
 - [x] Web server
@@ -272,6 +339,9 @@ The existing code focuses on ESP8266 networking, web-server control, relay switc
 - [x] 4-channel relay control
 - [x] Individual relay timers
 - [x] EEPROM state storage
+
+### Planned
+
 - [ ] Motion sensor integration
 - [ ] Light sensor integration
 - [ ] Temperature and humidity monitoring
@@ -281,12 +351,21 @@ The existing code focuses on ESP8266 networking, web-server control, relay switc
 - [ ] Wi-Fi / Bluetooth appliance integration
 - [ ] Air purifier control
 - [ ] Air humidifier control
-- [ ] Mobile application
+- [ ] Camera integration
+- [ ] Presence / occupancy detection
 - [ ] Google Assistant integration
-- [ ] Connected real-time microphones
-- [ ] Room-to-room voice commands
+- [ ] Connected microphones
+- [ ] Mobile application
+- [ ] Smart notifications
+- [ ] Arrival / nearby-user detection
+- [ ] User preference system
+- [ ] Appliance usage history
+- [ ] Behavior learning
+- [ ] Predictive automation
+- [ ] Machine learning
 - [ ] Custom PCB
 - [ ] Dedicated enclosure
+- [ ] Upgrade development board
 - [ ] Production-ready hardware and firmware
 
 ## Author
